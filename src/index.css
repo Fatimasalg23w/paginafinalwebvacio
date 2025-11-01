@@ -1,0 +1,131 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here.
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Industrial Red & Black Theme - Lighter (ajustada para fondo claro) */
+    --background: 5 2% 100%;     /* fondo muy claro */
+    --foreground: 0 0% 0%;     /* texto principal oscuro */
+
+    --card: 100 0% 100%;            /* tarjetas blancas */
+    --card-foreground: 85 0% 100%;
+
+    --popover: 0 0% 56%;
+    --popover-foreground:0 0% 58%;
+
+    --primary: 10 80% 35%;         /* rojo primario visible */
+    --primary-foreground: 0 20% 15%;
+    --primary-glow: 0 75% 60%;
+
+    --secondary: 8 8% 15%;
+    --secondary-foreground: 25 6% 15%;
+
+    --muted: 0 0% 1%;
+    --muted-foreground: 0 10% 1%;  /*botones*/
+
+    --accent: 15 12% 11%;
+    --accent-foreground: 22 6% 9%;
+
+    --destructive: 0 85% 20%;
+    --destructive-foreground: 0 0% 20%;
+
+    --border: 15 10% 15%;
+    --input: 15 8% 18%;
+    --ring: 0 85% 50%;
+
+    --radius: 0.75rem;
+
+    /* Gradients (más sutiles/translúcidos) */
+    --gradient-hero: linear-gradient(135deg, hsla(0, 2%, 8%, 0.95), hsl(0 78% 31% / 0.95));
+    --gradient-section: linear-gradient(180deg, hsl(0 82% 49% / 0.9), hsl(0 83% 32% / 0.85));
+    --gradient-accent: linear-gradient(90deg, hsl(0 85% 45% / 0.95), hsl(0 76% 21% / 0.9));
+    --gradient-overlay: linear-gradient(180deg, hsl(0 83% 43% / 0.08), hsl(0 79% 30% / 0.12));
+
+    /* Sombras más suaves para no oscurecer fondo */
+    --shadow-glow: 20 100 120px hsl(0 0% 0% / 0.06);
+    --shadow-elegant: 0 120px 60px -15px hsl(0 0% 0% / 0.06);
+
+    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-black;
+    font-feature-settings: "kern";
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  h1 {
+    @apply font-bold tracking-tight text-black; /* Titles in red */
+  }
+
+  h2 {
+    @apply font-bold tracking-tight text-black; /* Titles in black */
+  }
+
+  h3 {
+    @apply font-bold tracking-tight text-primary; /* Titles in black */
+  }
+
+  h4,{
+    @apply font-bold tracking-tight text-primary; /* Titles in black */
+  }
+  h5,
+  h6 {
+    @apply font-bold tracking-tight text-black; /* Titles in red */
+  }
+}
+
+@layer components {
+  .card-text {
+    color: hsl(var(--card-foreground)); /* texto de tarjetas oscuro sobre blanco */
+  }
+
+  .form-container {
+    background-color: hsl(var(--card));
+    color: hsl(var(--background));
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary-glow;
+  }
+
+  .parallax-section {
+    @apply relative overflow-hidden;
+  }
+
+  .video-overlay {
+    @apply absolute inset-0;
+    /* superposición mucho más ligera para que se vea el video de fondo */
+    background: linear-gradient(1deg, hsl(var(--background) / 0.1), hsl(var(--background) / 0.06));
+    pointer-events: none;
+  }
+
+  .glow-effect {
+    box-shadow: var(--shadow-glow);
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
