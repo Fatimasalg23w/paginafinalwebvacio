@@ -18,7 +18,7 @@ export const App = () => (
       <Sonner />
       <BrowserRouter basename="/blog">
         <Routes>
-          <Route path="/" element={<VacuumPumps />} />
+          <Route path="/*" element={<VacuumPumps />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
