@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Gauge, Fan, Filter, Package } from "lucide-react";
-import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 
 import {
   Card,
@@ -19,7 +19,6 @@ const Services = () => {
       description: "Soluciones integrales para sistemas de vacío industriales.",
       extraDescription:
         "Sistemas de vacío completos con accesorios como vacuómetros digitales, mangueras metálicas de 3, 4 y 6 pulgadas, válvulas reductoras, empaques compatibles con aceite dieléctrico y tornillería especializada.",
-      video: "https://www.pexels.com/es-es/download/video/30243438/",
       features:[
   "🏗️ Venta de equipos nuevos y reconstruidos.",
   "🛠️ Reparación, reconstrucción y mantenimiento.",
@@ -30,7 +29,6 @@ const Services = () => {
 
       images: [
         { src: "/webp/desgasificadoradeaceite1.webp", caption: "Sistema para secado de transformador de alta velocidad, autonomo, puede operar a alta presion- Vista frontal" },
-        { src: "/webp/bombadepaletasrotatorias.webp", caption: "Sistema especial para secados rapidos en transformadores + 220 MVA" },
         { src: "/webp/sistemadefiltracion.webp", caption: "Vista-lateral-Sistema especial para secados rapidos en transformadores + 220 MVA" },
         { src: "/webp/bombadepaletasrotatorias.webp", caption: "Sistema de vacio especial para secado rapido." },
         { src: "/webp/reparacionsistemasdevacio.webp", caption: "Sistema STOKES- Bomba+Booster reacondicionado." },
@@ -56,7 +54,6 @@ const Services = () => {
         "Eliminación de gases como nitrógeno, oxígeno, monóxido y bióxido de carbono, humedad, sin que el aceite regenerado pierda sus propiedades.",
       extraDescription:
         "En un solo paso usted puede eliminar de 2,800 a 1 partícula entre 5–10 micrones. Conoce nuestros casos de éxito.",
-      video: "https://www.pexels.com/download/video/30243438/",
       features: [
   "🏭 Venta de equipos nuevos y reconstruidos, reconstrucción, mantenimiento y reparación de sistemas de tratamiento de aceite.",
   "🧪 Servicio de filtrado y desgasificación en sus instalaciones.",
@@ -97,7 +94,6 @@ const Services = () => {
         "Servicio de secado de tanques e intercambiadores de calor, secado de transformadores al vacío, renta de sistemas de vacío completos para secado de transformador.",
       extraDescription:
         "Sistemas de filtración con alta eficiencia para aceites dieléctricos, líquidos hidráulicos y transformadores, con accesorios modulares para fácil integración.",
-      video: "https://www.pexels.com/download/video/10058364/",
       features: [
   "💧 Secado de tanques e intercambiadores de calor o cualquier otro con agua, por prueba hidrostática.",
   "⚡ Secado de transformadores al vacío nuevos y reparados con equipos de menos de 100 micrones.",
@@ -147,168 +143,176 @@ const Services = () => {
       ],
     },
   ];
-  const [zoomSrc, setZoomSrc] = useState<string | null>(null);
-const [imageIndices, setImageIndices] = useState<number[]>(
-  Array(services.length).fill(0)
-);
+ const [zoomSrc, setZoomSrc] = useState<string | null>(null);
+  const [imageIndices, setImageIndices] = useState<number[]>(
+    Array(services.length).fill(0)
+  );
 
-// ✅ Cierra el zoom al presionar Esc
-useEffect(() => {
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key === "Escape") setZoomSrc(null);
-  };
-  window.addEventListener("keydown", handleKeyDown);
-  return () => window.removeEventListener("keydown", handleKeyDown);
-}, []);
-
-return (
-  <section className="py-0">
-    {zoomSrc && (
-      <div className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center">
-        <div className="relative max-w-[90vw] max-h-[90vh] bg-black rounded-lg flex items-center justify-center p-4">
-          <button
-            onClick={() => setZoomSrc(null)}
-            className="absolute top-4 right-4 text-white text-3xl font-bold bg-red-600 hover:bg-red-700 border border-white rounded-full w-10 h-10 flex items-center justify-center z-[110] transition-colors"
-            aria-label="Cerrar imagen ampliada"
-          >
-            ×
-          </button>
-          <img
-            src={zoomSrc}
-            alt="Imagen ampliada"
-            className="w-auto h-auto max-w-[100vw] max-h-[100vh] object-contain z-[105] rounded-lg shadow-lg"
-            loading="eager"
-          />
-        </div>
-      </div>
-    )}
-{services.map((service, index) => {
-  const currentImageIndex = imageIndices[index];
-
-  const handlePrev = () => {
-    const newIndices = [...imageIndices];
-    newIndices[index] =
-      (newIndices[index] - 1 + service.images.length) % service.images.length;
-    setImageIndices(newIndices);
-  };
-
-  const handleNext = () => {
-    const newIndices = [...imageIndices];
-    const totalImages = service.images?.length || 0;
-    newIndices[index] = totalImages > 0
-      ? (newIndices[index] + 1) % totalImages
-      : 0;
-    setImageIndices(newIndices);
-  };
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setZoomSrc(null);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   return (
-    <div
-      key={service.id}
-      id={service.id}
-      className="relative min-h-screen flex flex-col justify-center overflow-hidden"
-    >
-      {/* 🎥 Video de fondo */}
-      {service.video && (
-        <video
-          src={service.video}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="none"
-          className="absolute inset-0 w-full h-full object-cover z-0"
+    <>
+      <Helmet>
+        <title>Servicios | Bombas y Sistemas de Vacío Industriales</title>
+        <meta
+          name="description"
+          content="Venta, reparación y personalización de sistemas de vacío industriales. Galería interactiva y detalles técnicos."
         />
-      )}
+        <meta property="og:title" content="Servicios de Vacío Industriales" />
+        <meta
+          property="og:description"
+          content="Expertos en soluciones de vacío para procesos industriales."
+        />
+        <meta property="og:image" content="/images/og-servicios.jpg" />
+      </Helmet>
 
-      {/* 🧊 Overlay oscuro */}
-      <div className="absolute inset-0 bg-black/75 z-10" />
-
-      {/* 🧱 Contenido principal */}
-      <div className="container mx-auto px-4 z-20 py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.3fr] gap-6 items-stretch">
-          {/* 🖼️ Galería sin tarjeta */}
-          <div className="flex flex-col items-center justify-center space-y-4">
-            <h2 className="text-4xl text-[#ED213A] text-center">Galería</h2>
-
-            {service.images.length > 0 && (
-              <div className="flex items-center justify-center gap-2">
-                <button
-                  onClick={handlePrev}
-                  className="w-9 h-9 bg-[#ED213A] text-white hover:bg-white hover:text-[#ED213A] rounded-full flex items-center justify-center transition"
-                  aria-label="Imagen anterior"
-                >
-                  <span className="text-2xl font-bold">‹</span>
-                </button>
-
-                <img
-                  src={service.images[currentImageIndex].src}
-                  alt={service.images[currentImageIndex].caption}
-                  loading="lazy"
-                  width={440}
-                  height={440}
-                  className="w-[440px] h-[440px] object-cover rounded-lg cursor-zoom-in"
-                  onClick={() => setZoomSrc(service.images[currentImageIndex].src)}
-                />
-
-                <button
-                  onClick={handleNext}
-                  className="w-9 h-9 bg-[#ED213A] text-white hover:bg-white hover:text-[#ED213A] rounded-full flex items-center justify-center transition"
-                  aria-label="Imagen siguiente"
-                >
-                  <span className="text-2xl font-bold">›</span>
-                </button>
-              </div>
-            )}
-
-            {service.images.length > 0 && (
-              <p className="italic text-xl text-center mt-0 text-white">
-                {service.images[currentImageIndex].caption}
-              </p>
-            )}
+      <section className="py-0">
+        {zoomSrc && (
+          <div className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center">
+            <div className="relative max-w-[90vw] max-h-[90vh] bg-black rounded-lg flex items-center justify-center p-4">
+              <button
+                onClick={() => setZoomSrc(null)}
+                className="absolute top-4 right-4 text-white text-3xl font-bold bg-red-600 hover:bg-red-700 border border-white rounded-full w-10 h-10 flex items-center justify-center z-[110] transition-colors"
+                aria-label="Cerrar imagen ampliada"
+              >
+                ×
+              </button>
+              <img
+                src={zoomSrc}
+                alt="Imagen ampliada"
+                className="w-auto h-auto max-w-[100vw] max-h-[100vh] object-contain z-[105] rounded-lg shadow-lg"
+                loading="eager"
+              />
+            </div>
           </div>
-{/* 📄 Tarjeta de texto compacta y limpia */}
-<Card className="mt-12 h-full max-h-[520px] bg-white/80 backdrop-blur-sm border-white/30 flex flex-col">
-  <CardHeader className="text-black space-y-2">
-    <h1 className="text-4xl font-bold text-[#ED213A] text-center lg:text-left">
-      {service.title}
-    </h1>
-    <h2 className="text-2xl font-semibold leading-snug">
-      {service.description}
-    </h2>
-    <h3 className="text-xl font-semibold">
-      Servicios disponibles
-    </h3>
-  </CardHeader>
+        )}
 
-  <CardContent className="text-black pb-4">
-    <div className="space-y-1 text-base">
-      {service.features.map((feature, idx) => (
-        <div key={idx}>{feature}</div>
-      ))}
-    </div>
+        {services.map((service, index) => {
+          const currentImageIndex = imageIndices[index];
 
-    <div className="mt-3 space-y-1">
-      <h4 className="text-lg font-semibold">
-        Nota:
-      </h4>
-      <p className="text-[1rem] leading-relaxed">
-        {service.extraDescription}
-      </p>
-    </div>
-  </CardContent>
-</Card>
+          const handlePrev = () => {
+            const newIndices = [...imageIndices];
+            newIndices[index] =
+              (newIndices[index] - 1 + service.images.length) %
+              service.images.length;
+            setImageIndices(newIndices);
+          };
 
-        </div>
-      </div>
-    </div>
+          const handleNext = () => {
+            const newIndices = [...imageIndices];
+            const totalImages = service.images?.length || 0;
+            newIndices[index] =
+              totalImages > 0
+                ? (newIndices[index] + 1) % totalImages
+                : 0;
+            setImageIndices(newIndices);
+          };
+
+          return (
+            <div
+              key={service.id}
+              id={service.id}
+              className="relative min-h-screen flex flex-col justify-center overflow-hidden"
+            >
+              <video
+                src="https://www.pexels.com/download/video/30243438/"
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="none"
+                className="absolute inset-0 w-full h-full object-cover z-0"
+              />
+              <div className="absolute inset-0 bg-black/75 z-10" />
+
+              <div className="container mx-auto px-4 z-20 py-6">
+                <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.3fr] gap-6 items-stretch">
+                  <div className="flex flex-col items-center justify-center space-y-4">
+                    <h2 className="text-4xl text-[#ED213A] text-center">
+                      Galería
+                    </h2>
+
+                    {service.images.length > 0 && (
+                      <div className="flex items-center justify-center gap-2">
+                        <button
+                          onClick={handlePrev}
+                          className="w-9 h-9 bg-[#ED213A] text-white hover:bg-white hover:text-[#ED213A] rounded-full flex items-center justify-center transition"
+                          aria-label="Imagen anterior"
+                        >
+                          <span className="text-2xl font-bold">‹</span>
+                        </button>
+
+                        <img
+                          src={service.images[currentImageIndex].src}
+                          alt={service.images[currentImageIndex].caption}
+                          loading="lazy"
+                          width={440}
+                          height={440}
+                          className="w-[440px] h-[440px] object-cover rounded-lg cursor-zoom-in"
+                          onClick={() =>
+                            setZoomSrc(service.images[currentImageIndex].src)
+                          }
+                        />
+
+                        <button
+                          onClick={handleNext}
+                          className="w-9 h-9 bg-[#ED213A] text-white hover:bg-white hover:text-[#ED213A] rounded-full flex items-center justify-center transition"
+                          aria-label="Imagen siguiente"
+                        >
+                          <span className="text-2xl font-bold">›</span>
+                        </button>
+                      </div>
+                    )}
+
+                    {service.images.length > 0 && (
+                      <p className="italic text-xl text-center mt-0 text-white">
+                        {service.images[currentImageIndex].caption}
+                      </p>
+                    )}
+                  </div>
+
+                  <Card className="mt-12 h-full max-h-[520px] bg-white/80 backdrop-blur-sm border-white/30 flex flex-col">
+                    <CardHeader className="text-black space-y-2">
+                      <h1 className="text-4xl font-bold text-[#ED213A] text-center lg:text-left">
+                        {service.title}
+                      </h1>
+                      <h2 className="text-2xl font-semibold leading-snug">
+                        {service.description}
+                      </h2>
+                      <h3 className="text-xl font-semibold">
+                        Servicios disponibles
+                      </h3>
+                    </CardHeader>
+
+                    <CardContent className="text-black pb-4">
+                      <div className="space-y-1 text-base">
+                        {service.features.map((feature, idx) => (
+                          <div key={idx}>{feature}</div>
+                        ))}
+                      </div>
+
+                      <div className="mt-3 space-y-1">
+                        <h4 className="text-lg font-semibold">Nota:</h4>
+                        <p className="text-[1rem] leading-relaxed">
+                          {service.extraDescription}
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </section>
+    </>
   );
-})}
+};
 
-
-
-
-  </section>
-  );
-}
-;
 export default Services;

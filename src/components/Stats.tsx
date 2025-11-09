@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from "react";
+import { Helmet } from "react-helmet-async";
 
 const Stats = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -82,33 +83,49 @@ const Stats = () => {
   ];
 
   return (
-    <section ref={sectionRef} className="py-5 bg-black">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {stats.map((stat, index) => (
-            <div
-              key={index}
-              className={`text-center p-8 rounded-xl bg-white/10 border border-white/20 hover:border-primary transition-all duration-300 hover:shadow-lg hover:glow-effect ${
-                isVisible ? "animate-fade-in" : "opacity-96"
-              }`}
-              style={{
-                animationDelay: `${index * 0.2}s`,
-                animationFillMode: "forwards",
-              }}
-            >
-              <div className="text-6xl md:text-7xl font-bold text-gradient mb-4">
-                {stat.value}
-                {stat.suffix}
+    <>
+      <Helmet>
+        <title>Estadísticas | Experiencia y Resultados en Tecnología de Vacío</title>
+        <meta
+          name="description"
+          content="Más de 30 años de experiencia, 200 clientes satisfechos y hasta 300% de mejora en producción."
+        />
+        <meta property="og:title" content="Estadísticas de Impacto | Soluciones de Vacío" />
+        <meta
+          property="og:description"
+          content="Descubre cómo nuestras soluciones han transformado procesos industriales en México."
+        />
+        <meta property="og:image" content="/images/og-stats.jpg" />
+      </Helmet>
+
+      <section ref={sectionRef} className="py-5 bg-black">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {stats.map((stat, index) => (
+              <div
+                key={index}
+                className={`text-center p-8 rounded-xl bg-white/10 border border-white/20 hover:border-primary transition-all duration-300 hover:shadow-lg hover:glow-effect ${
+                  isVisible ? "animate-fade-in" : "opacity-96"
+                }`}
+                style={{
+                  animationDelay: `${index * 0.2}s`,
+                  animationFillMode: "forwards",
+                }}
+              >
+                <div className="text-6xl md:text-7xl font-bold text-gradient mb-4">
+                  {stat.value}
+                  {stat.suffix}
+                </div>
+                <h3 className="text-xl font-bold text-white mb-2">
+                  {stat.label}
+                </h3>
+                <p className="text-white/80">{stat.description}</p>
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">
-                {stat.label}
-              </h3>
-              <p className="text-white/80">{stat.description}</p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 };
 
